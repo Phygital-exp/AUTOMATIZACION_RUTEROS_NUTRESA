@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rutero PDV Nutresa</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Rutero PDV Nutresa</h1>
+    <div class="usuario-info" id="usuarioInfo" hidden>
+      <span id="usuarioNombre"></span>
+      <button class="logout" id="btnLogout">Salir</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Pantalla 1: Login por cedula -->
+    <section class="pantalla activa" id="pantallaLogin">
+      <div class="card">
+        <h2>Ingresa tu cedula</h2>
+        <p style="font-size: 13px; color: var(--color-muted); margin-top: -8px;">
+          Solo el personal con cargo LAS puede registrar el rutero.
+        </p>
+        <form id="formLogin">
+          <div class="campo">
+            <label for="inputCedula">Cedula</label>
+            <input type="tel" id="inputCedula" inputmode="numeric" placeholder="Ej: 1030527032" required />
+          </div>
+          <button type="submit" class="primario" id="btnLogin">Ingresar</button>
+        </form>
+        <div class="mensaje error" id="mensajeLogin" hidden></div>
+      </div>
+    </section>
+
+    <!-- Pantalla 2: Buscar y seleccionar PDV -->
+    <section class="pantalla" id="pantallaBuscarPdv">
+      <div class="card">
+        <h2>Busca el punto de venta</h2>
+        <div class="campo">
+          <label for="inputBuscarPdv">Nombre, SAP, ciudad o direccion</label>
+          <input type="search" id="inputBuscarPdv" placeholder="Ej: Carulla Tunja" autocomplete="off" />
+        </div>
+        <div class="spinner" id="spinnerPdv" hidden>Buscando...</div>
+        <ul class="resultados-pdv" id="resultadosPdv"></ul>
+        <div class="mensaje error" id="mensajeBuscarPdv" hidden></div>
+      </div>
+    </section>
+
+    <!-- Pantalla 3: Seleccionar fechas -->
+    <section class="pantalla" id="pantallaFechas">
+      <div class="card">
+        <h2>Punto de venta seleccionado</h2>
+        <div class="resumen-pdv" id="resumenPdv"></div>
+        <button type="button" class="secundario" id="btnCambiarPdv">Cambiar PDV</button>
+      </div>
+      <div class="card">
+        <h2>Selecciona los dias de visita</h2>
+        <input type="text" id="calendarioFechas" placeholder="Selecciona una o mas fechas" readonly />
+        <div class="fechas-seleccionadas" id="resumenFechas">Ninguna fecha seleccionada</div>
+        <button type="button" class="primario" id="btnRegistrar" style="margin-top: 16px;" disabled>
+          Registrar visitas
+        </button>
+        <div class="mensaje error" id="mensajeRegistrar" hidden></div>
+      </div>
+    </section>
+
+    <!-- Pantalla 4: Confirmacion -->
+    <section class="pantalla" id="pantallaConfirmacion">
+      <div class="card">
+        <h2>Resultado del registro</h2>
+        <div class="mensaje" id="mensajeConfirmacion"></div>
+        <ul class="lista-registros" id="listaRegistros"></ul>
+        <button type="button" class="primario" id="btnNuevoPdv" style="margin-top: 16px;">
+          Registrar otro PDV
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
