@@ -35,9 +35,21 @@
       </div>
     </section>
 
-    <!-- Pantalla 2: Buscar y seleccionar PDV -->
+    <!-- Pantalla 2: Elegir modo de cargue -->
+    <section class="pantalla" id="pantallaModo">
+      <div class="card">
+        <h2>Como quieres cargar el rutero?</h2>
+        <button type="button" class="primario" id="btnModoIndividual">Cargue individual</button>
+        <p class="ayuda-modo">Busca un PDV a la vez y elige sus fechas en un calendario.</p>
+        <button type="button" class="primario" id="btnModoMasivo" style="margin-top: 18px;">Cargue masivo</button>
+        <p class="ayuda-modo">Sube un archivo con varios PDV (SAP) y fechas de una sola vez.</p>
+      </div>
+    </section>
+
+    <!-- Pantalla 3: Buscar y seleccionar PDV (cargue individual) -->
     <section class="pantalla" id="pantallaBuscarPdv">
       <div class="card">
+        <button type="button" class="volver" id="btnVolverModoDesdeBuscar">&lsaquo; Cambiar modo de cargue</button>
         <h2>Busca el punto de venta</h2>
         <div class="campo">
           <label for="inputBuscarPdv">Nombre, SAP, ciudad o direccion</label>
@@ -46,6 +58,62 @@
         <div class="spinner" id="spinnerPdv" hidden>Buscando...</div>
         <ul class="resultados-pdv" id="resultadosPdv"></ul>
         <div class="mensaje error" id="mensajeBuscarPdv" hidden></div>
+      </div>
+    </section>
+
+    <!-- Pantalla 3b: Cargue masivo por archivo -->
+    <section class="pantalla" id="pantallaMasivo">
+      <div class="card">
+        <button type="button" class="volver" id="btnVolverModoDesdeMasivo">&lsaquo; Cambiar modo de cargue</button>
+        <h2>Cargue masivo de rutero</h2>
+        <p style="font-size: 13px; color: var(--color-muted);">
+          El archivo (Excel o CSV) debe tener exactamente estas dos columnas en la primera fila:
+        </p>
+        <div class="tabla-reporte-wrapper">
+          <table class="tabla-reporte tabla-reporte--compacta">
+            <thead>
+              <tr><th>SAP</th><th>FECHA_VISITA</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10082948</td><td>05/09/2026</td></tr>
+              <tr><td>10082948</td><td>08/09/2026</td></tr>
+              <tr><td>10059124</td><td>05/09/2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size: 12px; color: var(--color-muted);">
+          El SAP debe existir en la base de PDV. La fecha puede ir como DD/MM/AAAA o AAAA-MM-DD.
+          Los demas datos del PDV (nombre, ciudad, direccion, canal, etc.) se completan automaticamente.
+        </p>
+        <button type="button" class="secundario" id="btnDescargarPlantilla">Descargar plantilla de ejemplo</button>
+
+        <div class="campo" style="margin-top: 16px;">
+          <label for="inputArchivoMasivo">Selecciona el archivo</label>
+          <input type="file" id="inputArchivoMasivo" accept=".xlsx,.xls,.csv" />
+        </div>
+        <div class="spinner" id="spinnerMasivo" hidden>Leyendo archivo...</div>
+        <div class="mensaje error" id="mensajeMasivo" hidden></div>
+        <ul class="lista-registros" id="listaErroresMasivo"></ul>
+      </div>
+
+      <div class="card" id="cardResumenMasivo" hidden>
+        <h2>Resumen de PDV encontrados</h2>
+        <div class="tabla-reporte-wrapper">
+          <table class="tabla-reporte tabla-reporte--compacta">
+            <thead>
+              <tr>
+                <th>SAP</th>
+                <th>PDV</th>
+                <th>Ciudad</th>
+                <th>Fechas</th>
+              </tr>
+            </thead>
+            <tbody id="filasResumenMasivo"></tbody>
+          </table>
+        </div>
+        <button type="button" class="primario" id="btnRegistrarMasivo" style="margin-top: 16px;">
+          Registrar rutero masivo
+        </button>
       </div>
     </section>
 
@@ -72,16 +140,42 @@
       <div class="card">
         <h2>Resultado del registro</h2>
         <div class="mensaje" id="mensajeConfirmacion"></div>
-        <ul class="lista-registros" id="listaRegistros"></ul>
-        <button type="button" class="primario" id="btnNuevoPdv" style="margin-top: 16px;">
-          Registrar otro PDV
-        </button>
+        <ul class="lista-registros" id="listaErrores"></ul>
       </div>
+
+      <div class="card" id="cardReporte" hidden>
+        <h2>Reporte del rutero registrado</h2>
+        <div class="tabla-reporte-wrapper">
+          <table class="tabla-reporte">
+            <thead>
+              <tr>
+                <th>SAP</th>
+                <th>PDV</th>
+                <th>Regional</th>
+                <th>Ciudad</th>
+                <th>Direccion</th>
+                <th>Canal</th>
+                <th>Fecha visita</th>
+                <th>Estado</th>
+                <th>LAS</th>
+                <th>LAS cedula</th>
+                <th>Estado visita</th>
+              </tr>
+            </thead>
+            <tbody id="filasReporte"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <button type="button" class="primario" id="btnVolverInicio">
+        Volver al inicio
+      </button>
     </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/app.js"></script>
 </body>
